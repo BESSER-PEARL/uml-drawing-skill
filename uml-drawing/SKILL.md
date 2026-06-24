@@ -109,9 +109,12 @@ model = DomainModel(
 assert model.validate()["success"]
 ```
 
-Naming: no spaces, no hyphens. For the full modeling reference (enums,
-methods, OCL, object/feature/deployment models), defer to the **besser-user**
-skill.
+Naming: no spaces, no hyphens. For everything beyond this minimal shape —
+enumerations, all multiplicity/composition patterns, association classes,
+generalization sets, methods, validation details — read
+**`references/class-diagram.md`** (bundled with this skill). For non-class
+model types (object, feature, deployment, OCL, …), see the BESSER platform's
+`besser-user` skill.
 
 Where the model comes from:
 - **From a description** — write it as above.
@@ -119,7 +122,7 @@ Where the model comes from:
   (classes, fields, relationships, inheritance) into the B-UML model. The
   agent does the modeling; there is no automatic code scanner.
 - **From PlantUML / Draw.io / a UI mockup** — use the matching into-B-UML
-  conversion (see the besser-user skill), then continue.
+  conversion (available via the BESSER platform), then continue.
 
 Now deliver it one of two ways.
 
