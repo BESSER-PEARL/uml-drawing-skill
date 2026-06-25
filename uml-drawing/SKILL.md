@@ -7,7 +7,9 @@ description: >
   builds a structurally-correct model (classes, attributes, associations,
   inheritance, multiplicities) — from a description or from existing code the
   agent reads — and delivers it either as B-UML code embedded in the document
-  or as an SVG/PNG image exported from the BESSER web editor. Trigger on
+  or as a rendered SVG/PNG image (the agent can render it itself with a single
+  call to BESSER's headless SVG endpoint, or export it from the BESSER web
+  editor). Trigger on
   "embed a UML diagram", "add a class diagram to the README", "draw the data
   model", "diagram my code", "export the diagram as an image/SVG/PNG", or any
   request for a diagram that should both look right and stay accurate. The diagram is
@@ -72,8 +74,8 @@ Deliver sections below.
 Then deliver one (or both):
 
   A) Embed the code:  drop the DomainModel Python into a fenced block in the .md
-  B) Embed an image:  load the model into editor.besser-pearl.org (Import →
-     B-UML), Export → SVG or PNG, save it (e.g. docs/img/data-model.svg),
+  B) Embed an image:  POST the model to BESSER's headless SVG endpoint (one
+     HTTP call — no browser), save the returned SVG (e.g. docs/img/data-model.svg),
      embed  ![Data model](docs/img/data-model.svg)
 
 3. When the model changes, update the model and re-deliver — one source of truth
@@ -116,6 +118,14 @@ generalization sets, methods, validation details — read
 model types (object, feature, deployment, OCL, …), see the BESSER platform's
 `besser-user` skill.
 
+> **Importable form — required for both delivery paths.** Write every
+> `Class(...)`, `BinaryAssociation(...)`, and `Generalization(...)` as an
+> **explicit top-level assignment**, exactly as shown above. BESSER's importer
+> (used by the SVG endpoint and by the editor's Import) reads the file's
+> *structure* — it does **not** execute it — so relationships built inside a
+> helper function or a loop are invisible: the classes import but the
+> associations silently vanish. One literal statement per relationship.
+
 Where the model comes from:
 - **From a description** — write it as above.
 - **From existing code** — read the source and translate its structure
@@ -145,40 +155,48 @@ and the input to any BESSER generator.
 
 ## Deliver B — embed a rendered image
 
-**Important:** image rendering happens **only in the BESSER web editor** — a
-browser step. BESSER's Python side has no `model → SVG/PNG` exporter, so the
-agent cannot produce the image file on its own (tracked upstream:
-[BESSER#553](https://github.com/BESSER-PEARL/BESSER/issues/553)). The agent's
-job is to build the correct model and hand off the export. Two ways to do the
-export:
+The model becomes a real picture through BESSER's renderer, so the image
+always matches the model. Two ways — pick by whether you want it hands-off or
+hand-tuned.
 
-**Guided manual export (default).** The agent gives the user these exact
-steps at https://editor.besser-pearl.org:
+### B1. Render it automatically (default) — one HTTP call, no browser
 
-1. **Import** the `.py` model — choose **Import** and the **B-UML** format. The
-   model appears as an editable class diagram. (Or draw the classes directly.)
-2. Adjust layout if you like (drag boxes, route lines).
-3. **Export** and pick a format:
-   - **SVG** — sharp at any size; best for docs and the web.
-   - **PNG** — transparent background.
-   - **PNG (white background)** — for surfaces that need an opaque image.
-   - (It can also export the model as **B-UML** or **JSON** — those are the
-     model, not an image.)
-4. Save the image into the repo (e.g. `docs/img/data-model.svg`).
+BESSER exposes a headless **B-UML → SVG** endpoint. The agent POSTs the model
+`.py` file and gets an SVG back — no editor, no manual steps, nothing for the
+user to click:
 
-The agent then embeds it:
+```bash
+curl -X POST https://editor.besser-pearl.org/besser_api/get-svg \
+  -F "buml_file=@data-model.py;type=text/x-python" \
+  -o docs/img/data-model.svg
+```
+
+The endpoint parses the B-UML, auto-lays it out, and returns `image/svg+xml`.
+Save it into the repo and embed:
 
 ```markdown
 ![Data model](docs/img/data-model.svg)
 ```
 
-**Browser automation (optional).** If the agent has a browser tool (e.g.
-Claude-in-Chrome / Playwright), it can drive the editor through the same
-Import → Export steps headlessly instead of asking the user. Heavier and more
-fragile than the manual path; use only when an unattended image is required.
+- The model file must be in **importable form** (see the callout in §1) — the
+  same form the editor imports. Class diagrams only.
+- Layout is automatic. When the placement matters, hand-tune it with B2.
 
-SVG and PNG render everywhere Markdown images do — GitHub, GitLab, docs
-sites, wikis, slides — with no plugin.
+### B2. Hand-tuned export from the editor (when layout matters)
+
+Open https://editor.besser-pearl.org, **Import** the `.py` (choose the
+**B-UML** format), drag boxes and route lines to taste, then **Export** and
+pick a format:
+
+- **SVG** — sharp at any size; best for docs and the web.
+- **PNG** — transparent background.
+- **PNG (white background)** — for surfaces that need an opaque image.
+
+Save into the repo and embed it the same way. (The editor can also export the
+model as **B-UML** or **JSON** — those are the model, not an image.)
+
+Either way, SVG and PNG render everywhere Markdown images do — GitHub, GitLab,
+docs sites, wikis, slides — with no plugin.
 
 ## Keep it from drifting
 

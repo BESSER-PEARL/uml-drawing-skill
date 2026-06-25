@@ -15,7 +15,7 @@ renders as a picture. This skill fixes both.
 ```text
 You:   "Add a class diagram of our blog data model to the README."
 Agent: ‣ models Users · Posts · Comments with correct multiplicities
-       ‣ delivers it as embedded B-UML code — or a rendered SVG/PNG image
+       ‣ renders it to a real SVG itself — one call, no browser
        ‣ embeds  ![Blog data model](docs/img/blog-model.svg)
 ```
 
@@ -33,10 +33,12 @@ keeps them in sync:
   associations, and inheritance are right.
 - **Start from a description *or* your code.** Describe the domain, or point
   the agent at existing source and let it model the structure.
-- **Two ways to embed.** Drop the **B-UML code** straight into your `.md`, or
-  export an **SVG/PNG** image from
-  [editor.besser-pearl.org](https://editor.besser-pearl.org) and embed the
-  picture. No Mermaid plugin, no rendering service.
+- **Two ways to embed — and the agent renders the image itself.** Drop the
+  **B-UML code** straight into your `.md`, or get a real **SVG/PNG**: the agent
+  renders it with a single call to BESSER's headless `B-UML → SVG` endpoint —
+  no browser, no Mermaid plugin, no rendering service. (Want to hand-place the
+  layout? Export from [editor.besser-pearl.org](https://editor.besser-pearl.org)
+  instead — same model.)
 - **It doesn't drift.** Both come from one model you keep in the repo. Change
   the model, re-deliver, commit — the doc never goes stale.
 - **The diagram can become the system.** The same model generates working code
@@ -57,13 +59,43 @@ Or copy the `uml-drawing/` folder into your agent's skills directory
 
 1. **Model it** — the agent builds a B-UML class model from your description
    or from existing code it reads (always class diagrams, always via B-UML).
-2. **Deliver it** — either embed the **B-UML code** in your `.md`, or import
-   the model into the BESSER editor and export an **SVG/PNG** image to embed.
+2. **Deliver it** — embed the **B-UML code** in your `.md`, or get a rendered
+   **SVG/PNG**: one HTTP call to BESSER's headless endpoint (no browser), or a
+   hand-tuned export from the BESSER editor when layout matters.
 3. **Keep it current** — the model is the source of truth; change it and
    re-deliver. The doc never drifts.
 
 Full instructions live in [`SKILL.md`](uml-drawing/SKILL.md); your agent
 loads them automatically when a task matches.
+
+## Render an image in one call
+
+Once the agent has written the model (say `data-model.py`), turning it into an
+embeddable SVG is a single request — no browser, no plugin, no rendering
+service to host:
+
+```bash
+curl -X POST https://editor.besser-pearl.org/besser_api/get-svg \
+  -F "buml_file=@data-model.py;type=text/x-python" \
+  -o docs/img/data-model.svg
+```
+
+Then drop `![Data model](docs/img/data-model.svg)` into your doc. Done.
+
+## Examples
+
+Ready-to-render B-UML models live in [`examples/`](examples/), one per
+class-diagram feature the skill handles:
+
+| Example | Shows |
+|---------|-------|
+| [`ecommerce.py`](examples/ecommerce.py) | associations · multiplicities · composition |
+| [`vehicles.py`](examples/vehicles.py)   | inheritance hierarchy · abstract classes |
+| [`tasks.py`](examples/tasks.py)         | enumerations · composition |
+| [`org.py`](examples/org.py)             | self-referential associations |
+| [`enroll.py`](examples/enroll.py)       | association classes |
+
+Render any of them with the one-call command above.
 
 ## Part of the BESSER skill family
 
