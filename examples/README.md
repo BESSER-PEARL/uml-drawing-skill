@@ -12,9 +12,14 @@ skill handles. Each file is a complete, `validate()`-checked
 | [`org.py`](org.py)             | self-referential association (manages / managedBy) |
 | [`enroll.py`](enroll.py)       | association class (attribute on the link) |
 
-Two of them ship with their rendered output for reference —
-[`vehicles.svg`](vehicles.svg) and [`tasks.svg`](tasks.svg) — each produced by
-the one-call command below, straight from the matching `.py`.
+## Rendered output
+
+`vehicles.py` and `tasks.py` ship with the SVG the endpoint returns — each
+produced by the one-call command below, straight from the matching `.py`:
+
+| [`vehicles.py`](vehicles.py) → [`vehicles.svg`](vehicles.svg) | [`tasks.py`](tasks.py) → [`tasks.svg`](tasks.svg) |
+|:---:|:---:|
+| <img src="vehicles.svg" alt="Vehicles class diagram — inheritance hierarchy with an abstract superclass" width="340"> | <img src="tasks.svg" alt="Task tracker class diagram — enumeration and composition" width="340"> |
 
 ## Render one to an image
 
