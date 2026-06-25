@@ -7,6 +7,11 @@
 job and makes it do it right: put a correct UML class diagram — as a real
 embeddable image — into your docs.**
 
+<p align="center">
+  <img src="examples/vehicles.svg" alt="UML class diagram rendered from B-UML by the uml-drawing skill" width="430">
+</p>
+<p align="center"><sub>Rendered from <a href="examples/vehicles.py"><code>examples/vehicles.py</code></a> in one call — no browser, no plugin. This SVG is the skill's actual output.</sub></p>
+
 Ask your agent to "add a class diagram to the README" today and you get one of
 two bad outcomes: a diagram with the modeling subtly wrong (reversed arrows,
 invalid multiplicities, inheritance backwards), or a code block that never

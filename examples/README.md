@@ -12,6 +12,10 @@ skill handles. Each file is a complete, `validate()`-checked
 | [`org.py`](org.py)             | self-referential association (manages / managedBy) |
 | [`enroll.py`](enroll.py)       | association class (attribute on the link) |
 
+Two of them ship with their rendered output for reference —
+[`vehicles.svg`](vehicles.svg) and [`tasks.svg`](tasks.svg) — each produced by
+the one-call command below, straight from the matching `.py`.
+
 ## Render one to an image
 
 No browser, no install — one HTTP call to BESSER's headless `B-UML → SVG`
