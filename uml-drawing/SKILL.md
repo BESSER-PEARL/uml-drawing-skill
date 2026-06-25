@@ -64,6 +64,15 @@ disagree. Pick by context (a design doc that should stay runnable → code; a
 README that should show a picture → image), or provide both. Details in the
 Deliver sections below.
 
+**Where it lands.** If the user names a target document (a README, a design
+doc), embed into that file. If they name none — or ask for a standalone diagram
+of a repo/system — default to delivering a **new self-contained `.md`** (e.g.
+`docs/<model>.md`): the rendered image (Deliver B) and/or the B-UML code
+(Deliver A), plus a line or two explaining what the diagram shows. That turns a
+bare "diagram my repo" into a committable document rather than a loose SVG.
+When you create a new file, say where you put it (and offer the alternative —
+embed into an existing doc instead — if that may be what they wanted).
+
 ## Workflow
 
 ```
