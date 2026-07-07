@@ -9,24 +9,31 @@
 job and makes it do it right: put a correct UML class diagram — as a real,
 rendered image — into your docs.**
 
-With the skill installed, one request is all it takes — describe the domain, or
-point the agent at code you already have:
+This skill supports two common workflows:
+
+**1. Design a system from a description**. Describe your domain in natural language, and the agent creates a B-UML model and renders the corresponding UML class diagram.
 
 ```text
 You:   "Add a class diagram of our vehicle fleet to the README."
 Agent: ‣ models Vehicle · Car · Truck · ElectricCar with correct inheritance
        ‣ renders it to a real SVG itself — one call, no browser
        ‣ embeds  ![Vehicle fleet](examples/vehicles.svg)
+```
 
+**2. Document an existing codebase**. Point the agent to your source code, and it extracts the classes and relationships, creates the B-UML model, and generates the diagram.
+
+```text
 You:   "Diagram the classes in src/fleet/ for the docs."
 Agent: ‣ reads your existing code, recovers the classes and how they relate
        ‣ builds the same validated B-UML model and renders the SVG
 ```
 
+The result is a diagram generated from a validated model that can be included directly in README files, design documents, wikis, and presentations.
+
 <p align="center">
   <img src="examples/vehicles.svg" alt="UML class diagram rendered from B-UML by the uml-drawing skill" width="430">
 </p>
-<p align="center"><sub>The agent's actual output — rendered from <a href="examples/vehicles.py"><code>examples/vehicles.py</code></a> in a single call, no browser or plugin. Whether you describe the model or the agent reads it from your own source, the diagram comes from real, validated code — never a freehand guess. That's the skill at work.</sub></p>
+<p align="center"><sub>The agent's actual output — rendered from <a href="examples/vehicles.py"><code>examples/vehicles.py</code></a> in a single call, no browser or plugin. Whether you describe the model or the agent reads it from your own source, the diagram comes from real, validated code. That's the skill at work.</sub></p>
 
 ## Why you need it
 
