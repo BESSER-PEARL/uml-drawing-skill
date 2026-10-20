@@ -5,6 +5,8 @@
 [![Release](https://img.shields.io/github/v/release/BESSER-PEARL/uml-drawing?color=orange&label=release)](https://github.com/BESSER-PEARL/uml-drawing/releases/latest)
 [![Part of BESSER Skills](https://img.shields.io/badge/part%20of-BESSER%20Skills-orange)](https://github.com/BESSER-PEARL/besser-skills)
 
+> ⭐ **Part of [BESSER](https://github.com/BESSER-PEARL/BESSER)**, the open-source low-code platform that turns models into working apps. If this project is useful to you, please [star the main repo](https://github.com/BESSER-PEARL/BESSER) too.
+
 **An [Agent Skill](https://agentskills.io) by [BESSER](https://besser-pearl.org) that gives your AI coding agent one
 job and makes it do it right: put a correct UML class diagram — as a real,
 rendered image — into your docs.**
